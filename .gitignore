@@ -1,0 +1,14 @@
+
+// composer para jwt
+vendor
+composer.json
+composer.lock
+
+// codificação de senha, auth com jwt e sessão 
+/security
+
+// arquivos de exemplo
+usuarios.php
+alunos.php
+model/Aluno.php
+model/Usuario.php
