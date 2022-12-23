@@ -29,6 +29,22 @@ if (isMetodo("POST")) {
             $saida = array("status" => "Erro", "msg" => "Falha ao registrar");
             $codigo = 400;
         }
+    } else if (parametrosValidos($_POST, ["title", "user_id"])) {
+        $title = $_POST["title"];
+        $user_id = $_POST["user_id"];
+
+        if (ToDo::createWithNullDesc($title, 0, $user_id)) {
+            $saida = array(
+                "status" => "Sucesso",
+                "title" => $title,
+                "description" => null,
+                "done" => 0
+            );
+            $codigo = 201;
+        } else {
+            $saida = array("status" => "Erro", "msg" => "Falha ao registrar");
+            $codigo = 400;
+        }
     } else {
         $saida = array("status" => "Erro", "msg" => "Operacao Invalida");
         $codigo = 400;

@@ -24,6 +24,26 @@ class ToDo
         }
     }
 
+    public static function createWithNullDesc($title, $done, $user_id)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $stmt = $conexao->prepare(
+                "INSERT INTO to_do(title, done, user_id) VALUES (?,?,?)"
+            );
+            $stmt->execute([$title, $done, $user_id]);
+
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
     public static function existsUserId($id)
     {
         try {
