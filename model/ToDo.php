@@ -78,4 +78,24 @@ class ToDo
             exit;
         }
     }
+
+    public static function delete($id, $user_id)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $stmt = $conexao->prepare(
+                "DELETE FROM to_do WHERE id=? and user_id=?"
+            );
+            $stmt->execute([$id, $user_id]);
+
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
 }

@@ -76,3 +76,26 @@ if (isMetodo("GET")) {
     }
     responder($codigo, $saida);
 }
+
+if(isMetodo("DELETE")){
+    if (parametrosValidos($_DELETE, ["id", "user_id"])) {
+        $id = $_DELETE["id"];
+        $user_id = $_DELETE["user_id"];
+        if (ToDo::existsUserId($id)) {
+            if (ToDo::delete($_DELETE["id"], $_DELETE["user_id"])) {
+                $saida = array("status" => "Sucesso", "msg" => "Registro deletado com sucesso");
+                $codigo = 200;
+            }else{
+                $saida = array("status" => "Erro", "msg" => "Falha ao deletar");
+                $codigo = 400;
+            }
+        }else{
+            $saida = array("status" => "Erro", "msg" => "Registro nao encontrado");
+            $codigo = 404;
+        }
+    }else{
+        $saida = array("status" => "Erro", "msg" => "Operacao Invalida");
+        $codigo = 400;
+    }
+    responder($codigo, $saida);
+}
