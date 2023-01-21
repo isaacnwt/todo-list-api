@@ -2,6 +2,7 @@
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -20,6 +21,7 @@ if (isMetodo("POST")) {
         if (ToDo::create($title, $description, 0, $user_id)) {
             $saida = array(
                 "status" => "Sucesso",
+                "msg" => "Registro realizado com sucesso",
                 "title" => $title,
                 "description" => $description,
                 "done" => 0
@@ -36,6 +38,7 @@ if (isMetodo("POST")) {
         if (ToDo::createWithNullDesc($title, 0, $user_id)) {
             $saida = array(
                 "status" => "Sucesso",
+                "msg" => "Registro realizado com sucesso",
                 "title" => $title,
                 "description" => null,
                 "done" => 0
@@ -81,7 +84,7 @@ if(isMetodo("DELETE")){
     if (parametrosValidos($_DELETE, ["id", "user_id"])) {
         $id = $_DELETE["id"];
         $user_id = $_DELETE["user_id"];
-        if (ToDo::existsUserId($id)) {
+        if (ToDo::existsUserId($user_id)) {
             if (ToDo::delete($_DELETE["id"], $_DELETE["user_id"])) {
                 $saida = array("status" => "Sucesso", "msg" => "Registro deletado com sucesso");
                 $codigo = 200;
