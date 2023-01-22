@@ -44,28 +44,7 @@ class ToDo
         }
     }
 
-    public static function existsUserId($id)
-    {
-        try {
-            $conexao = Conexao::getConexao();
-            $stmt = $conexao->prepare(
-                "SELECT COUNT(*) FROM to_do WHERE user_id = ?"
-            );
-            $stmt->execute([$id]);
-
-            $quantidade = $stmt->fetchColumn();
-            if ($quantidade > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            exit;
-        }
-    }
-
-    public static function getToDoByUserId($id)
+    public static function getByUserId($id)
     {
         try {
             $conexao = Conexao::getConexao();
@@ -79,6 +58,27 @@ class ToDo
         }
     }
 
+    public static function update($id, $user_id, $title, $description, $done)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $stmt = $conexao->prepare(
+                "UPDATE to_do SET title=?, description=?, done=? WHERE id=? and user_id=?"
+            );
+            $stmt->execute([$title, $description, $done, $id, $user_id]);
+
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+
     public static function delete($id, $user_id)
     {
         try {
@@ -89,6 +89,27 @@ class ToDo
             $stmt->execute([$id, $user_id]);
 
             if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    public static function existsUserId($id)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $stmt = $conexao->prepare(
+                "SELECT COUNT(*) FROM to_do WHERE user_id = ?"
+            );
+            $stmt->execute([$id]);
+
+            $quantidade = $stmt->fetchColumn();
+            if ($quantidade > 0) {
                 return true;
             } else {
                 return false;

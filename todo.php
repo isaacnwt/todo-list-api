@@ -60,7 +60,7 @@ if (isMetodo("GET")) {
     if (parametrosValidos($_GET, ["id"])) {
         $id = $_GET["id"];
         if (ToDo::existsUserId($id)) {
-            $todo_list = Todo::getToDoByUserId($id);
+            $todo_list = Todo::getByUserId($id);
             $saida = [];
             foreach ($todo_list as $todo) {
                 $saida[] = array(
@@ -76,6 +76,33 @@ if (isMetodo("GET")) {
             $saida = array("status" => "Erro", "msg" => "Registro nao encontrado");
             $codigo = 404;
         }
+    }
+    responder($codigo, $saida);
+}
+
+if(isMetodo("PUT")) {
+    if(parametrosValidos($_PUT, ["id", "user_id", "title", "description", "done"])) {
+        $user_id = $_PUT["user_id"];
+        if(ToDo::existsUserId($user_id)) {
+            $id = $_PUT["id"];
+            $title = $_PUT["title"];
+            $description = $_PUT["description"];
+            $done = $_PUT["done"];
+
+            if(Todo::update($id, $user_id, $title, $description, $done)) {
+                $saida = array("status" => "Sucesso", "msg" => "Edicao realizada com sucesso");
+                $codigo = 200;  
+            } else {
+                $saida = array("status" => "Erro", "msg" => "Falha ao editar");
+                $codigo = 400;  
+            }
+        } else {
+            $saida = array("status" => "Erro", "msg" => "Registro nao encontrado");
+            $codigo = 404;    
+        }
+    } else {
+        $saida = array("status" => "Erro", "msg" => "Operacao invalida");
+        $codigo = 400;
     }
     responder($codigo, $saida);
 }
